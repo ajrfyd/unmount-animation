@@ -1,70 +1,13 @@
-# Getting Started with Create React App
+## Practice of animation for unmount
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+언마운트시 애니메이션 적용될 수 있도록 연습하였음. 
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 방법(page Component)
+1. 페이지가 나타났다 사라지는 trigger를 자체 appear라는 상태를 사용.
+2. useEffect(첫번째)의 디펜던시에 페이지 값의 변경에 따른 appear 상태 => true로 변경(최초 마운트에도 true가 됨)
+3. next, prev버튼에 appear 상태값 false하여 꺼진 상태를 발동 시키며 동시에 페이지 이동(navigate)하여 새로운 페이지  랜더링
+4. 자체 localState를 트리거인 appear 값과 연동시켜 
+5. 두번째 useEffect는 버튼을 누름과 디펜던시의 appear 값이 false로 바뀌어 실행.
+6. 처음 localState 값이 appear와 연동되어 있으나 버튼의 trigger 역할을 통해 false로 바뀌면 잠시 localState의 값과 appear값이 다르게 되고, 조건문이 발동하여 animate 값을 true로 바꾸게 된다.(여기서 animate 값은 언마운트 시 애니메이션을 발동하는 trigger가 됨)
+7. 두번째 useEffect의 조건문 밑에서 다시 localState값과  appear 값을 일치 시켜 준다.(없으면 언마운트시 애니메이션 x)
+8. unmount 애니메이션 필요한 컴포넌트에 disappear프롭으로 animation 상태값 넘겨줌.(animation 값이 true 이면 마운트와 다른 애니메이션 보여줌.)
